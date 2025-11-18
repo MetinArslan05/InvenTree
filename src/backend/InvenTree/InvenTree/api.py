@@ -26,8 +26,14 @@ from InvenTree import helpers
 from InvenTree.auth_overrides import registration_enabled
 from InvenTree.mixins import ListCreateAPI
 from InvenTree.sso import sso_registration_enabled
-from plugin.serializers import MetadataSerializer
+# from plugin.serializers import MetadataSerializer  # Plugin system removed
 from users.models import ApiToken
+
+# Stub MetadataSerializer since plugin system is removed
+class MetadataSerializer:
+    """Stub for MetadataSerializer - plugin system removed."""
+    def __init__(self, *args, **kwargs):
+        pass
 from users.permissions import check_user_permission
 
 from .helpers import plugins_info

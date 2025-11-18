@@ -23,7 +23,7 @@ from django.urls import reverse
 from djmoney.contrib.exchange.models import ExchangeBackend, Rate
 from rest_framework.test import APITestCase
 
-from plugin import registry
+#from plugin import registry
 from plugin.models import PluginConfig
 
 

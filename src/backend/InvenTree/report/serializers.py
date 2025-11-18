@@ -136,14 +136,13 @@ class LabelPrintSerializer(serializers.Serializer):
         help_text=_('Select label template'),
     )
 
-    # Plugin field - note that we use the 'key' (not the pk) for lookup
-    plugin = plugin.serializers.PluginRelationSerializer(
-        many=False,
-        required=False,
-        allow_null=False,
-        label=_('Printing Plugin'),
-        help_text=_('Select plugin to use for label printing'),
-    )
+    # Plugin field - plugin system removed
+    # plugin = serializers.CharField(
+    #     required=False,
+    #     allow_null=True,
+    #     label=_('Printing Plugin'),
+    #     help_text=_('DEPRECATED: Plugin system removed'),
+    # )
 
     items = serializers.ListField(
         child=serializers.IntegerField(),

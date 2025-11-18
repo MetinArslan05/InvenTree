@@ -33,7 +33,7 @@ def export_data(
     This function is designed to be called by the background task,
     to avoid blocking the web server.
     """
-    from plugin import registry
+#    from plugin import registry
 
     if (plugin := registry.get_plugin(plugin_key, active=True)) is None:
         logger.warning("export_data: Plugin '%s' not found", plugin_key)

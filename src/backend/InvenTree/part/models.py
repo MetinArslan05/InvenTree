@@ -647,7 +647,7 @@ class Part(
 
         This function is exposed to any Validation plugins, and thus can be customized.
         """
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         for plugin in registry.with_mixin(PluginMixinEnum.VALIDATION):
             # Run the name through each custom validator
@@ -669,7 +669,7 @@ class Part(
         - Validation is handled by custom plugins
         - By default, no validation checks are performed
         """
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         for plugin in registry.with_mixin(PluginMixinEnum.VALIDATION):
             try:
@@ -769,7 +769,7 @@ class Part(
         serial = str(serial).strip()
 
         # First, throw the serial number against each of the loaded validation plugins
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         for plugin in registry.with_mixin(PluginMixinEnum.VALIDATION):
             # Run the serial number through each custom validator
@@ -889,7 +889,7 @@ class Part(
         Returns:
             The latest serial number specified for this part, or None
         """
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         if allow_plugins:
             # Check with plugin system
@@ -3792,7 +3792,7 @@ class PartParameter(
         self.calculate_numeric_value()
 
         # Run custom validation checks (via plugins)
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         for plugin in registry.with_mixin(PluginMixinEnum.VALIDATION):
             # Note: The validate_part_parameter function may raise a ValidationError

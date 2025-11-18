@@ -10,8 +10,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='stockitem',
-            name='build_order',
-        ),
+        # Removed: Cannot remove build_order field as it was never created (references deleted 'build' module)
+        # migrations.RemoveField(
+        #     model_name='stockitem',
+        #     name='build_order',
+        # ),
     ]

@@ -10,9 +10,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RenameField(
-            model_name='stockitem',
-            old_name='sales_order',
-            new_name='sales_order_line',
-        ),
+        # Removed: Cannot rename sales_order field as it was never created (references deleted 'order' module)
+        # migrations.RenameField(
+        #     model_name='stockitem',
+        #     old_name='sales_order',
+        #     new_name='sales_order_line',
+        # ),
     ]

@@ -10,12 +10,12 @@ def get_legacy_models():
     # Legacy attachment types to convert:
     # app_label, table name, target model, model ref
     return [
-        ('build', 'BuildOrderAttachment', 'build', 'build'),
+        # ('build', 'BuildOrderAttachment', 'build', 'build'),
         ('company', 'CompanyAttachment', 'company', 'company'),
         ('company', 'ManufacturerPartAttachment', 'manufacturerpart', 'manufacturer_part'),
-        ('order', 'PurchaseOrderAttachment', 'purchaseorder', 'order'),
-        ('order', 'SalesOrderAttachment', 'salesorder', 'order'),
-        ('order', 'ReturnOrderAttachment', 'returnorder', 'order'),
+        # ('order', 'PurchaseOrderAttachment', 'purchaseorder', 'order'),
+        # ('order', 'SalesOrderAttachment', 'salesorder', 'order'),
+        # ('order', 'ReturnOrderAttachment', 'returnorder', 'order'),
         ('part', 'PartAttachment', 'part', 'part'),
         ('stock', 'StockItemAttachment', 'stockitem', 'stock_item')
     ]
@@ -109,10 +109,10 @@ def reverse_attachments(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('build', '0050_auto_20240508_0138'),
+        # ('build', '0050_auto_20240508_0138'),
         ('common', '0025_attachment'),
         ('company', '0069_company_active'),
-        ('order', '0099_alter_salesorder_status'),
+        # ('order', '0099_alter_salesorder_status'),
         ('part', '0123_parttesttemplate_choices'),
         ('stock', '0110_alter_stockitemtestresult_finished_datetime_and_more')
     ]

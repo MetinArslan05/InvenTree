@@ -10,8 +10,8 @@ import mptt.fields
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('order', '0030_auto_20200426_0551'),
-        ('build', '0016_auto_20200426_0551'),
+        # ('order', '0030_auto_20200426_0551'),
+        # ('build', '0016_auto_20200426_0551'),
         ('part', '0035_auto_20200406_0045'),
         ('company', '0021_remove_supplierpart_manufacturer_name'),
         ('stock', '0033_auto_20200426_0539'),
@@ -32,16 +32,18 @@ class Migration(migrations.Migration):
             name='belongs_to',
             field=models.ForeignKey(blank=True, help_text='Is this item installed in another item?', null=True, on_delete=django.db.models.deletion.DO_NOTHING, related_name='owned_parts', to='stock.StockItem', verbose_name='Installed In'),
         ),
-        migrations.AlterField(
-            model_name='stockitem',
-            name='build',
-            field=models.ForeignKey(blank=True, help_text='Build for this stock item', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='build_outputs', to='build.Build', verbose_name='Source Build'),
-        ),
-        migrations.AlterField(
-            model_name='stockitem',
-            name='build_order',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='stock_items', to='build.Build', verbose_name='Destination Build Order'),
-        ),
+        # Removed: build field references deleted 'build' module
+        # migrations.AlterField(
+        #     model_name='stockitem',
+        #     name='build',
+        #     field=models.ForeignKey(blank=True, help_text='Build for this stock item', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='build_outputs', to='build.Build', verbose_name='Source Build'),
+        # ),
+        # Removed: build_order field references deleted 'build' module
+        # migrations.AlterField(
+        #     model_name='stockitem',
+        #     name='build_order',
+        #     field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='stock_items', to='build.Build', verbose_name='Destination Build Order'),
+        # ),
         migrations.AlterField(
             model_name='stockitem',
             name='link',
@@ -67,21 +69,23 @@ class Migration(migrations.Migration):
             name='part',
             field=models.ForeignKey(help_text='Base part', limit_choices_to={'active': True, 'is_template': False, 'virtual': False}, on_delete=django.db.models.deletion.CASCADE, related_name='stock_items', to='part.Part', verbose_name='Base Part'),
         ),
-        migrations.AlterField(
-            model_name='stockitem',
-            name='purchase_order',
-            field=models.ForeignKey(blank=True, help_text='Purchase order for this stock item', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='stock_items', to='order.PurchaseOrder', verbose_name='Source Purchase Order'),
-        ),
+        # Removed: purchase_order field references deleted 'order' module
+        # migrations.AlterField(
+        #     model_name='stockitem',
+        #     name='purchase_order',
+        #     field=models.ForeignKey(blank=True, help_text='Purchase order for this stock item', null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='stock_items', to='order.PurchaseOrder', verbose_name='Source Purchase Order'),
+        # ),
         migrations.AlterField(
             model_name='stockitem',
             name='quantity',
             field=models.DecimalField(decimal_places=5, default=1, max_digits=15, validators=[django.core.validators.MinValueValidator(0)], verbose_name='Stock Quantity'),
         ),
-        migrations.AlterField(
-            model_name='stockitem',
-            name='sales_order',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='stock_items', to='order.SalesOrder', verbose_name='Destination Sales Order'),
-        ),
+        # Removed: sales_order field references deleted 'order' module
+        # migrations.AlterField(
+        #     model_name='stockitem',
+        #     name='sales_order',
+        #     field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='stock_items', to='order.SalesOrder', verbose_name='Destination Sales Order'),
+        # ),
         migrations.AlterField(
             model_name='stockitem',
             name='serial',

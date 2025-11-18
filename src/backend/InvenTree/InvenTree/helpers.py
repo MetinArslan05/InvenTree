@@ -533,7 +533,7 @@ def increment_serial_number(serial, part=None):
         incremented value, or None if incrementing could not be performed.
     """
     from InvenTree.exceptions import log_error
-    from plugin import PluginMixinEnum, registry
+#    from plugin import PluginMixinEnum, registry
 
     # Ensure we start with a string value
     if serial is not None:
@@ -1152,7 +1152,7 @@ def pui_url(subpath: str) -> str:
 
 def plugins_info(*args, **kwargs):
     """Return information about activated plugins."""
-    from plugin import PluginMixinEnum
+#    from plugin import PluginMixinEnum
     from plugin.registry import registry
 
     # Check if plugins are even enabled

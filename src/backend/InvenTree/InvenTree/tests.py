@@ -1191,7 +1191,7 @@ class TestSettings(InvenTreeTestCase):
         if envs is None:
             envs = {}
 
-        from plugin import registry
+#        from plugin import registry
 
         with in_env_context(envs):
             settings.USER_ADDED = False
@@ -1239,7 +1239,7 @@ class TestSettings(InvenTreeTestCase):
     def test_initial_install(self):
         """Test if install of plugins on startup works."""
         from common.settings import set_global_setting
-        from plugin import registry
+#        from plugin import registry
 
         set_global_setting('PLUGIN_ON_STARTUP', True)
 

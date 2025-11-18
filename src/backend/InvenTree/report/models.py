@@ -32,7 +32,7 @@ from common.settings import get_global_setting
 from InvenTree.helpers_model import get_base_url
 from InvenTree.models import MetadataMixin
 # from plugin import InvenTreePlugin, PluginMixinEnum
-from plugin.registry import registry
+# from plugin.registry import registry  # Plugin system removed
 
 try:
     from weasyprint import HTML
@@ -433,12 +433,7 @@ class ReportTemplate(TemplateUploadMixin, ReportTemplateBase):
 
     def get_plugin_context(self, instance, request, context):
         """Get the context for the plugin."""
-        for plugin in registry.with_mixin(PluginMixinEnum.REPORT):
-            try:
-                plugin.add_report_context(self, instance, request, context)
-            except Exception:
-                InvenTree.exceptions.log_error('add_report_context', plugin=plugin.slug)
-
+        # Plugin system removed - return context as-is
         return context
 
     def handle_attachment(self, instance, report, report_name, request, debug_mode):
@@ -454,13 +449,8 @@ class ReportTemplate(TemplateUploadMixin, ReportTemplateBase):
 
     def notify_plugins(self, instance, report, request):
         """Provide generated report to any interested plugins."""
-        report_plugins = registry.with_mixin(PluginMixinEnum.REPORT)
-
-        for plugin in report_plugins:
-            try:
-                plugin.report_callback(self, instance, report, request)
-            except Exception:
-                InvenTree.exceptions.log_error('report_callback', plugin=plugin.slug)
+        # Plugin system removed - no plugins to notify
+        pass
 
     def print(self, items: list, request=None, output=None, **kwargs) -> DataOutput:
         """Print reports for a list of items against this template.
@@ -716,21 +706,14 @@ class LabelTemplate(TemplateUploadMixin, ReportTemplateBase):
             context['page_style'] = self.generate_page_style()
 
         # Pass the context through to any registered plugins
-        plugins = registry.with_mixin(PluginMixinEnum.REPORT)
-
-        for plugin in plugins:
-            # Let each plugin add its own context data
-            try:
-                plugin.add_label_context(self, instance, request, context)
-            except Exception:
-                InvenTree.exceptions.log_error('add_label_context', plugin=plugin.slug)
+        # Plugin system removed - no plugins to call
 
         return context
 
     def print(
         self,
         items: list,
-        plugin: InvenTreePlugin,
+        plugin=None,  # Plugin system removed
         output=None,
         options=None,
         request=None,
@@ -740,7 +723,7 @@ class LabelTemplate(TemplateUploadMixin, ReportTemplateBase):
 
         Arguments:
             items: A list of items to print labels for (model instance)
-            plugin: The plugin to use for label rendering
+            plugin: DEPRECATED - Plugin system removed
             output: The DataOutput object to use (if provided)
             options: Additional options for the label printing plugin (optional)
             request: The request object (optional)
@@ -751,47 +734,32 @@ class LabelTemplate(TemplateUploadMixin, ReportTemplateBase):
         Raises:
             ValidationError: If there is an error during label printing
         """
+        plugin_name = plugin.slug if plugin else 'default'
         logger.info(
-            f"Printing {len(items)} labels against template '{self.name}' using plugin '{plugin.slug}'"
+            f"Printing {len(items)} labels against template '{self.name}' using plugin '{plugin_name}'"
         )
 
-        if not output:
-            output = DataOutput.objects.create(
-                user=request.user
-                if request and request.user.is_authenticated
-                else None,
-                total=len(items),
-                progress=0,
-                complete=False,
-                output_type=DataOutput.DataOutputTypes.LABEL,
-                template_name=self.name,
-                plugin=plugin.slug,
-                output=None,
-            )
+        # Plugin system removed - label printing not supported
+        raise ValidationError(_('Label printing requires plugin system which has been removed'))
 
-        if options is None:
-            options = {}
+        # The code below is kept for reference but not executed
+        if False:  # noqa
+            if not output:
+                output = DataOutput.objects.create(
+                    user=request.user
+                    if request and request.user.is_authenticated
+                    else None,
+                    total=len(items),
+                    progress=0,
+                    complete=False,
+                    output_type=DataOutput.DataOutputTypes.LABEL,
+                    template_name=self.name,
+                    plugin=plugin.slug if plugin else 'default',
+                    output=None,
+                )
 
-        try:
-            if hasattr(plugin, 'before_printing'):
-                plugin.before_printing()
-
-            plugin.print_labels(self, output, items, request, printing_options=options)
-
-            if hasattr(plugin, 'after_printing'):
-                plugin.after_printing()
-        except ValidationError as e:
-            output.delete()
-            raise e
-        except Exception as e:
-            output.delete()
-            InvenTree.exceptions.log_error('print_labels', plugin=plugin.slug)
-            raise ValidationError([_('Error printing labels'), str(e)])
-
-        output.refresh_from_db()
-
-        # Return the output object
-        return output
+            # Return the output object
+            return output
 
 
 class ReportSnippet(TemplateUploadMixin, models.Model):

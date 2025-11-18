@@ -4,7 +4,11 @@ from django.db import migrations
 
 
 def update_stock_history(apps, schema_editor):
-    """Data migration to fix a 'shortcoming' in the implementation of StockTracking history
+    """
+    DISABLED: This function referenced the deleted 'sales_order' field.
+    Sales order functionality has been removed from the system.
+
+    Original purpose: Data migration to fix a 'shortcoming' in the implementation of StockTracking history
 
     Prior to https://github.com/inventree/InvenTree/pull/4488,
     shipping items via a SalesOrder did not record the SalesOrder in the tracking history.
@@ -14,42 +18,45 @@ def update_stock_history(apps, schema_editor):
     - Check that it does *not* have any appropriate history
     - Add the appropriate history!
     """
+    # Function disabled - sales_order field removed
+    pass
 
-    from stock.status_codes import StockHistoryCode
+    # Original code commented out:
+    # from stock.status_codes import StockHistoryCode
 
-    StockItem = apps.get_model('stock', 'stockitem')
-    StockItemTracking = apps.get_model('stock', 'stockitemtracking')
+    # StockItem = apps.get_model('stock', 'stockitem')
+    # StockItemTracking = apps.get_model('stock', 'stockitemtracking')
 
-    # Find StockItems which are marked as against a SalesOrder
-    items = StockItem.objects.exclude(sales_order=None)
+    # # Find StockItems which are marked as against a SalesOrder
+    # items = StockItem.objects.exclude(sales_order=None)
 
-    n = 0
+    # n = 0
 
-    for item in items:
-        # Find newest relevant history
-        history = StockItemTracking.objects.filter(
-            item=item,
-            tracking_type__in=[StockHistoryCode.SENT_TO_CUSTOMER, StockHistoryCode.SHIPPED_AGAINST_SALES_ORDER]
-        ).order_by('-date').first()
+    # for item in items:
+    #     # Find newest relevant history
+    #     history = StockItemTracking.objects.filter(
+    #         item=item,
+    #         tracking_type__in=[StockHistoryCode.SENT_TO_CUSTOMER, StockHistoryCode.SHIPPED_AGAINST_SALES_ORDER]
+    #     ).order_by('-date').first()
 
-        if not history:
-            continue
+    #     if not history:
+    #         continue
 
-        # We've already updated this one, it appears
-        if history.tracking_type != StockHistoryCode.SENT_TO_CUSTOMER:
-            continue
+    #     # We've already updated this one, it appears
+    #     if history.tracking_type != StockHistoryCode.SENT_TO_CUSTOMER:
+    #         continue
 
-        # Update the 'deltas' of this history to include SalesOrder information
-        history.deltas['salesorder'] = item.sales_order.pk
+    #     # Update the 'deltas' of this history to include SalesOrder information
+    #     history.deltas['salesorder'] = item.sales_order.pk
 
-        # Change the history type
-        history.tracking_type = StockHistoryCode.SHIPPED_AGAINST_SALES_ORDER.value
+    #     # Change the history type
+    #     history.tracking_type = StockHistoryCode.SHIPPED_AGAINST_SALES_ORDER.value
 
-        history.save()
-        n += 1
+    #     history.save()
+    #     n += 1
 
-    if n > 0:
-        print(f"Updated {n} StockItemTracking entries with SalesOrder data")
+    # if n > 0:
+    #     print(f"Updated {n} StockItemTracking entries with SalesOrder data")
 
 
 class Migration(migrations.Migration):

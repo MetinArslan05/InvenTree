@@ -587,7 +587,7 @@ class GeneralApiTests(InvenTreeAPITestCase):
 
     def test_info_view(self):
         """Test that we can read the 'info-view' endpoint."""
-        from plugin import PluginMixinEnum
+#        from plugin import PluginMixinEnum
         from plugin.models import PluginConfig
         from plugin.registry import registry
 

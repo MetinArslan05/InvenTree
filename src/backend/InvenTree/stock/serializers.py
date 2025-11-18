@@ -84,14 +84,14 @@ class GenerateBatchCodeSerializer(serializers.Serializer):
         read_only=True, help_text=_('Generated batch code'), label=_('Batch Code')
     )
 
-    build_order = serializers.PrimaryKeyRelatedField(
-        queryset=build.models.Build.objects.all(),
-        many=False,
-        required=False,
-        allow_null=True,
-        label=_('Build Order'),
-        help_text=_('Select build order'),
-    )
+    # build_order = serializers.PrimaryKeyRelatedField(
+    #     queryset=build.models.Build.objects.all(),  # Build module removed
+    #     many=False,
+    #     required=False,
+    #     allow_null=True,
+    #     label=_('Build Order'),
+    #     help_text=_('Select build order'),
+    # )
 
     item = serializers.PrimaryKeyRelatedField(
         queryset=StockItem.objects.all(),

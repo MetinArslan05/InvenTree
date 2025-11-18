@@ -96,7 +96,7 @@ class StateTransitionMixin:
             default_action: Default action to be taken if none of the transitions returns a boolean true value
         """
         from InvenTree.exceptions import log_error
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         transition_plugins = registry.with_mixin(PluginMixinEnum.STATE_TRANSITION)
 

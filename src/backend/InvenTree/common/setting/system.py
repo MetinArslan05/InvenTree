@@ -99,7 +99,7 @@ def settings_group_options():
 def reload_plugin_registry(setting):
     """When a core plugin setting is changed, reload the plugin registry."""
     from common.models import logger
-    from plugin import registry
+#    from plugin import registry
 
     logger.info("Reloading plugin registry due to change in setting '%s'", setting.key)
 
@@ -109,7 +109,7 @@ def reload_plugin_registry(setting):
 def barcode_plugins() -> list:
     """Return a list of plugin choices which can be used for barcode generation."""
     try:
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         plugins = registry.with_mixin(PluginMixinEnum.BARCODE, active=True)
     except Exception:  # pragma: no cover
@@ -751,7 +751,7 @@ SYSTEM_SETTINGS: dict[str, InvenTreeSettingsKeyType] = {
         'name': _('Build Order Reference Pattern'),
         'description': _('Required pattern for generating Build Order reference field'),
         'default': 'BO-{ref:04d}',
-        'validator': build.validators.validate_build_order_reference_pattern,
+        'validator': str,  # Build module removed
     },
     'BUILDORDER_REQUIRE_RESPONSIBLE': {
         'name': _('Require Responsible Owner'),
@@ -811,7 +811,7 @@ SYSTEM_SETTINGS: dict[str, InvenTreeSettingsKeyType] = {
             'Required pattern for generating Return Order reference field'
         ),
         'default': 'RMA-{ref:04d}',
-        'validator': order.validators.validate_return_order_reference_pattern,
+        'validator': str,  # Order module removed
     },
     'RETURNORDER_REQUIRE_RESPONSIBLE': {
         'name': _('Require Responsible Owner'),
@@ -831,7 +831,7 @@ SYSTEM_SETTINGS: dict[str, InvenTreeSettingsKeyType] = {
         'name': _('Sales Order Reference Pattern'),
         'description': _('Required pattern for generating Sales Order reference field'),
         'default': 'SO-{ref:04d}',
-        'validator': order.validators.validate_sales_order_reference_pattern,
+        'validator': str,  # Order module removed
     },
     'SALESORDER_REQUIRE_RESPONSIBLE': {
         'name': _('Require Responsible Owner'),
@@ -875,7 +875,7 @@ SYSTEM_SETTINGS: dict[str, InvenTreeSettingsKeyType] = {
             'Required pattern for generating Purchase Order reference field'
         ),
         'default': 'PO-{ref:04d}',
-        'validator': order.validators.validate_purchase_order_reference_pattern,
+        'validator': str,  # Order module removed
     },
     'PURCHASEORDER_REQUIRE_RESPONSIBLE': {
         'name': _('Require Responsible Owner'),

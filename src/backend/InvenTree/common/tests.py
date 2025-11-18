@@ -33,7 +33,7 @@ from InvenTree.unit_test import (
     addUserPermission,
 )
 from part.models import Part, PartParameterTemplate
-from plugin import registry
+#from plugin import registry
 
 from .api import WebhookView
 from .models import (
@@ -1366,7 +1366,7 @@ class CommonTest(InvenTreeAPITestCase):
 
     def test_restart_flag(self):
         """Test that the restart flag is reset on start."""
-        from plugin import registry
+#        from plugin import registry
 
         # set flag true
         set_global_setting('SERVER_RESTART_REQUIRED', True, None)

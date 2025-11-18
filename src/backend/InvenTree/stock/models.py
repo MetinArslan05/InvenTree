@@ -675,7 +675,7 @@ class StockItem(
 
         This function hooks into the plugin system to allow for custom serial number conversion.
         """
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         # First, let any plugins convert this serial number to an integer value
         # If a non-null value is returned (by any plugin) we will use that
@@ -880,7 +880,7 @@ class StockItem(
         - Validation is performed by custom plugins.
         - By default, no validation checks are performed
         """
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         for plugin in registry.with_mixin(PluginMixinEnum.VALIDATION):
             try:

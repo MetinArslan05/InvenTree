@@ -7,18 +7,20 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('order', '0024_salesorderallocation'),
+        # ('order', '0024_salesorderallocation'),
         ('stock', '0030_auto_20200422_0015'),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='stockitem',
-            name='sales_order_line',
-        ),
-        migrations.AddField(
-            model_name='stockitem',
-            name='sales_order',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='stock_items', to='order.SalesOrder'),
-        ),
+        # Removed: Cannot remove sales_order_line field as it was never created (references deleted 'order' module)
+        # migrations.RemoveField(
+        #     model_name='stockitem',
+        #     name='sales_order_line',
+        # ),
+        # Removed: sales_order field references deleted 'order' module
+        # migrations.AddField(
+        #     model_name='stockitem',
+        #     name='sales_order',
+        #     field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='stock_items', to='order.SalesOrder'),
+        # ),
     ]

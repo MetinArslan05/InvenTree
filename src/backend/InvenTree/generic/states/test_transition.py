@@ -5,7 +5,7 @@ from django.core.exceptions import ValidationError
 from InvenTree.unit_test import InvenTreeTestCase
 from order.models import ReturnOrder
 from order.status_codes import ReturnOrderStatus
-from plugin import registry
+#from plugin import registry
 
 
 class TransitionTests(InvenTreeTestCase):

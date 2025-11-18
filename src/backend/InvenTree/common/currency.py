@@ -134,7 +134,7 @@ def validate_currency_codes(value):
 def currency_exchange_plugins() -> Optional[list]:
     """Return a list of plugin choices which can be used for currency exchange."""
     try:
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         plugs = registry.with_mixin(PluginMixinEnum.CURRENCY_EXCHANGE, active=True)
     except Exception:

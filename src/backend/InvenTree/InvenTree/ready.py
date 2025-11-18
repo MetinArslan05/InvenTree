@@ -154,6 +154,5 @@ def isPluginRegistryLoaded():
 
     Returns: 'False' if the registry has not fully loaded the plugins yet.
     """
-    from plugin import registry
-
-    return registry.plugins_loaded
+    # Plugin system removed - always return True
+    return True

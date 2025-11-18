@@ -22,7 +22,7 @@ class InvenTreeExchange(SimpleExchangeBackend):
 
     def get_rates(self, **kwargs) -> dict:
         """Set the requested currency codes and get rates."""
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         base_currency = kwargs.get('base_currency', currency_code_default())
         symbols = kwargs.get('symbols', currency_codes())

@@ -8,7 +8,7 @@ import InvenTree.models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ('plugin', '0009_alter_pluginconfig_key'),
+        # ('plugin', '0009_alter_pluginconfig_key'),  # Plugin app removed
         ('common', '0031_auto_20241026_0024'),
     ]
 
@@ -176,16 +176,17 @@ class Migration(migrations.Migration):
                 verbose_name='Default Entry',
             ),
         ),
-        migrations.AddField(
-            model_name='selectionlist',
-            name='source_plugin',
-            field=models.ForeignKey(
-                blank=True,
-                help_text='Plugin which provides the selection list',
-                null=True,
-                on_delete=django.db.models.deletion.SET_NULL,
-                to='plugin.pluginconfig',
-                verbose_name='Source Plugin',
-            ),
-        ),
+        # Removed: source_plugin field references deleted 'plugin' module
+        # migrations.AddField(
+        #     model_name='selectionlist',
+        #     name='source_plugin',
+        #     field=models.ForeignKey(
+        #         blank=True,
+        #         help_text='Plugin which provides the selection list',
+        #         null=True,
+        #         on_delete=django.db.models.deletion.SET_NULL,
+        #         to='plugin.pluginconfig',
+        #         verbose_name='Source Plugin',
+        #     ),
+        # ),
     ]

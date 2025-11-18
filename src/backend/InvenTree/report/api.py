@@ -22,7 +22,12 @@ from InvenTree.api import MetadataView
 from InvenTree.filters import InvenTreeSearchFilter
 from InvenTree.mixins import ListCreateAPI, RetrieveUpdateDestroyAPI
 # from plugin import PluginMixinEnum
-from plugin.builtin.labels.inventree_label import InvenTreeLabelPlugin
+# from plugin.builtin.labels.inventree_label import InvenTreeLabelPlugin  # Plugin system removed
+
+# Stub for InvenTreeLabelPlugin
+class InvenTreeLabelPlugin:
+    """Stub for InvenTreeLabelPlugin - plugin system removed."""
+    NAME = 'inventreelabel'
 
 
 class TemplatePermissionMixin:
@@ -101,7 +106,7 @@ class LabelPrint(GenericAPIView):
 
     def get_plugin_class(self, plugin_slug: str, raise_error=False):
         """Return the plugin class for the given plugin key."""
-        from plugin import registry
+#        from plugin import registry
 
         if not plugin_slug:
             # Use the default label printing plugin

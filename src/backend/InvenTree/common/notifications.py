@@ -15,7 +15,7 @@ import common.models
 from InvenTree.exceptions import log_error
 from InvenTree.ready import isImportingData, isRebuildingData
 # from plugin import PluginMixinEnum, registry
-from users.models import Owner
+# Moved Owner import to function level to avoid circular import
 from users.permissions import check_user_permission
 
 logger = structlog.get_logger('inventree')
@@ -150,6 +150,9 @@ def trigger_notification(obj: Model, category: str = '', obj_ref: str = 'pk', **
     target_users = set()
 
     if targets:
+        # Import Owner locally to avoid circular import
+        from users.models import Owner
+
         for target in targets:
             if target is None:
                 continue

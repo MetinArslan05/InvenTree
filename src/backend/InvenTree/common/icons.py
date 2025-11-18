@@ -73,7 +73,7 @@ def get_icon_packs():
         ]
 
         from InvenTree.exceptions import log_error
-        from plugin import PluginMixinEnum, registry
+#        from plugin import PluginMixinEnum, registry
 
         for plugin in registry.with_mixin(PluginMixinEnum.ICON_PACK, active=True):
             try:

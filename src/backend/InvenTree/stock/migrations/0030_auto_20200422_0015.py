@@ -7,14 +7,15 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('order', '0023_auto_20200420_2309'),
+        # ('order', '0023_auto_20200420_2309'),
         ('stock', '0029_auto_20200421_2359'),
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='stockitem',
-            name='sales_order_line',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='stock_items', to='order.SalesOrderLineItem'),
-        ),
+        # Removed: sales_order_line field references deleted 'order' module
+        # migrations.AlterField(
+        #     model_name='stockitem',
+        #     name='sales_order_line',
+        #     field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='stock_items', to='order.SalesOrderLineItem'),
+        # ),
     ]
