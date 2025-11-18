@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from rest_framework import serializers
 
-import plugin.serializers
+# import plugin.serializers
 import report.helpers
 import report.models
 from InvenTree.serializers import (

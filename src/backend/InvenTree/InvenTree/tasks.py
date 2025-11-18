@@ -30,7 +30,7 @@ from opentelemetry import trace
 
 from common.settings import get_global_setting, set_global_setting
 from InvenTree.config import get_setting
-from plugin import registry
+# from plugin import registry
 
 from .version import isInvenTreeUpToDate
 

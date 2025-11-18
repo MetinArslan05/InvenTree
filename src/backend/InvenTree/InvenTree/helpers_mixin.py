@@ -8,7 +8,7 @@ from typing import Any
 from django.conf import settings
 from django.core.cache import cache
 
-from plugin import registry as plg_registry
+# from plugin import registry as plg_registry
 
 
 class ClassValidationMixin:

@@ -19,7 +19,7 @@ import InvenTree.exceptions
 from common.models import DataOutput
 from InvenTree.helpers import str2bool
 from InvenTree.tasks import offload_task
-from plugin import PluginMixinEnum, registry
+# from plugin import PluginMixinEnum, registry
 
 logger = structlog.get_logger('inventree')
 

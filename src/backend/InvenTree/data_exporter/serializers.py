@@ -6,7 +6,7 @@ from rest_framework import serializers
 
 import InvenTree.exceptions
 import InvenTree.helpers
-from plugin import PluginMixinEnum, registry
+# from plugin import PluginMixinEnum, registry
 
 
 class DataExportOptionsSerializer(serializers.Serializer):

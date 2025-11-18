@@ -10,7 +10,7 @@ import structlog
 import common.models
 import InvenTree.config
 import InvenTree.helpers
-import plugin.models
+# import plugin.models
 from common.settings import get_global_setting
 from InvenTree import version
 from plugin.plugin import InvenTreePlugin

@@ -31,7 +31,7 @@ from common.models import DataOutput, RenderChoices
 from common.settings import get_global_setting
 from InvenTree.helpers_model import get_base_url
 from InvenTree.models import MetadataMixin
-from plugin import InvenTreePlugin, PluginMixinEnum
+# from plugin import InvenTreePlugin, PluginMixinEnum
 from plugin.registry import registry
 
 try:

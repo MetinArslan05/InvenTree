@@ -21,7 +21,7 @@ from common.serializers import DataOutputSerializer
 from InvenTree.api import MetadataView
 from InvenTree.filters import InvenTreeSearchFilter
 from InvenTree.mixins import ListCreateAPI, RetrieveUpdateDestroyAPI
-from plugin import PluginMixinEnum
+# from plugin import PluginMixinEnum
 from plugin.builtin.labels.inventree_label import InvenTreeLabelPlugin
 
 

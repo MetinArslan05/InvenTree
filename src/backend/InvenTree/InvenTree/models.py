@@ -91,7 +91,7 @@ class PluginValidationMixin(DiffMixin):
 
     def run_plugin_validation(self):
         """Throw this model against the plugin validation interface."""
-        from plugin import PluginMixinEnum, registry
+        # from plugin import PluginMixinEnum, registry  # Plugin system removed
 
         deltas = self.get_field_deltas()
 
@@ -134,7 +134,7 @@ class PluginValidationMixin(DiffMixin):
         Note: Each plugin may raise a ValidationError to prevent deletion.
         """
         from InvenTree.exceptions import log_error
-        from plugin import PluginMixinEnum, registry
+        # from plugin import PluginMixinEnum, registry  # Plugin system removed
 
         for plugin in registry.with_mixin(PluginMixinEnum.VALIDATION):
             try:
@@ -1128,7 +1128,7 @@ class InvenTreeBarcodeMixin(models.Model):
 
     def format_barcode(self, **kwargs):
         """Return a string for formatting a QR code for this model instance."""
-        from plugin.base.barcodes.helper import generate_barcode
+        # from plugin.base.barcodes.helper import generate_barcode  # Plugin system removed
 
         return generate_barcode(self)
 
@@ -1210,7 +1210,7 @@ def notify_staff_users_of_error(instance, label: str, context: dict):
     """Helper function to notify staff users of an error."""
     import common.models
     import common.notifications
-    from plugin.builtin.integration.core_notifications import InvenTreeUINotifications
+    # from plugin.builtin.integration.core_notifications import InvenTreeUINotifications  # Plugin system removed
 
     try:
         # Get all staff users

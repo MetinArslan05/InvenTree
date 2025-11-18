@@ -26,7 +26,7 @@ from InvenTree.serializers import (
     InvenTreeImageSerializerField,
     InvenTreeModelSerializer,
 )
-from plugin import registry as plugin_registry
+# from plugin import registry as plugin_registry
 from users.serializers import OwnerSerializer, UserSerializer
 
 

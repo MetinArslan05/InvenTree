@@ -14,7 +14,7 @@ import structlog
 import common.models
 from InvenTree.exceptions import log_error
 from InvenTree.ready import isImportingData, isRebuildingData
-from plugin import PluginMixinEnum, registry
+# from plugin import PluginMixinEnum, registry
 from users.models import Owner
 from users.permissions import check_user_permission
 

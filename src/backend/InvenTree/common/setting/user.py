@@ -4,7 +4,7 @@ from django.core.validators import MinValueValidator
 from django.utils.translation import gettext_lazy as _
 
 from common.setting.type import InvenTreeSettingsKeyType
-from plugin import PluginMixinEnum, registry
+# from plugin import PluginMixinEnum, registry
 
 
 def label_printer_options():

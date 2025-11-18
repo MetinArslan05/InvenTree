@@ -13,10 +13,10 @@ from django.utils.translation import gettext_lazy as _
 
 from jinja2 import Template
 
-import build.validators
+# import build.validators
 import common.currency
 import common.validators
-import order.validators
+# import order.validators
 import report.helpers
 from common.setting.type import InvenTreeSettingsKeyType
 
