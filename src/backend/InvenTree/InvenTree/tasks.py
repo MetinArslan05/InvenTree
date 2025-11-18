@@ -697,7 +697,8 @@ def check_for_migrations(force: bool = False, reload_registry: bool = True) -> b
 
     if reload_registry:
         # Force plugin registry reload
-        registry.check_reload()
+        # registry.check_reload()  # Plugin system removed
+        pass
 
     plan = get_migration_plan()
 
