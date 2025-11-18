@@ -2242,14 +2242,14 @@ class SelectionList(InvenTree.models.MetadataMixin, InvenTree.models.InvenTreeMo
         help_text=_('Can this selection list be used?'),
     )
 
-    source_plugin = models.ForeignKey(
-        'plugin.PluginConfig',
-        on_delete=models.SET_NULL,
-        blank=True,
-        null=True,
-        verbose_name=_('Source Plugin'),
-        help_text=_('Plugin which provides the selection list'),
-    )
+    # source_plugin = models.ForeignKey(  # Plugin module removed
+    #     'plugin.PluginConfig',
+    #     on_delete=models.SET_NULL,
+    #     blank=True,
+    #     null=True,
+    #     verbose_name=_('Source Plugin'),
+    #     help_text=_('Plugin which provides the selection list'),
+    # )
 
     source_string = models.CharField(
         max_length=1000,

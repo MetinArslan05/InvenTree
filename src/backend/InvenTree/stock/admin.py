@@ -62,16 +62,16 @@ class StockItemAdmin(admin.ModelAdmin):
 
     autocomplete_fields = [
         'belongs_to',
-        'build',
+        # 'build',  # Build module removed
         'customer',
         'location',
         'parent',
         'part',
-        'purchase_order',
-        'sales_order',
+        # 'purchase_order',  # Order module removed
+        # 'sales_order',  # Order module removed
         'stocktake_user',
         'supplier_part',
-        'consumed_by',
+        # 'consumed_by',  # Build module removed
     ]
 
 

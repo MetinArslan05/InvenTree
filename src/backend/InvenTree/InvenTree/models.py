@@ -91,24 +91,8 @@ class PluginValidationMixin(DiffMixin):
 
     def run_plugin_validation(self):
         """Throw this model against the plugin validation interface."""
-        # from plugin import PluginMixinEnum, registry  # Plugin system removed
-
-        deltas = self.get_field_deltas()
-
-        for plugin in registry.with_mixin(PluginMixinEnum.VALIDATION):
-            try:
-                if plugin.validate_model_instance(self, deltas=deltas) is True:
-                    return
-            except ValidationError as exc:
-                raise exc
-            except Exception:
-                # Log the exception to the database
-                import InvenTree.exceptions
-
-                InvenTree.exceptions.log_error(
-                    'validate_model_instance', plugin=plugin.slug
-                )
-                raise ValidationError(_('Error running plugin validation'))
+        # Plugin system removed - no validation to run
+        pass
 
     def full_clean(self, *args, **kwargs):
         """Run plugin validation on full model clean.

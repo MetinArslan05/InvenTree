@@ -1117,46 +1117,46 @@ class StockItem(
         default=1,
     )
 
-    build = models.ForeignKey(
-        'build.Build',
-        on_delete=models.SET_NULL,
-        verbose_name=_('Source Build'),
-        blank=True,
-        null=True,
-        help_text=_('Build for this stock item'),
-        related_name='build_outputs',
-    )
+    # build = models.ForeignKey(  # Build module removed
+    #     'build.Build',
+    #     on_delete=models.SET_NULL,
+    #     verbose_name=_('Source Build'),
+    #     blank=True,
+    #     null=True,
+    #     help_text=_('Build for this stock item'),
+    #     related_name='build_outputs',
+    # )
 
-    consumed_by = models.ForeignKey(
-        'build.Build',
-        on_delete=models.CASCADE,
-        verbose_name=_('Consumed By'),
-        blank=True,
-        null=True,
-        help_text=_('Build order which consumed this stock item'),
-        related_name='consumed_stock',
-    )
+    # consumed_by = models.ForeignKey(  # Build module removed
+    #     'build.Build',
+    #     on_delete=models.CASCADE,
+    #     verbose_name=_('Consumed By'),
+    #     blank=True,
+    #     null=True,
+    #     help_text=_('Build order which consumed this stock item'),
+    #     related_name='consumed_stock',
+    # )
 
     is_building = models.BooleanField(default=False)
 
-    purchase_order = models.ForeignKey(
-        'order.PurchaseOrder',
-        on_delete=models.SET_NULL,
-        verbose_name=_('Source Purchase Order'),
-        related_name='stock_items',
-        blank=True,
-        null=True,
-        help_text=_('Purchase order for this stock item'),
-    )
+    # purchase_order = models.ForeignKey(  # Order module removed
+    #     'order.PurchaseOrder',
+    #     on_delete=models.SET_NULL,
+    #     verbose_name=_('Source Purchase Order'),
+    #     related_name='stock_items',
+    #     blank=True,
+    #     null=True,
+    #     help_text=_('Purchase order for this stock item'),
+    # )
 
-    sales_order = models.ForeignKey(
-        'order.SalesOrder',
-        on_delete=models.SET_NULL,
-        verbose_name=_('Destination Sales Order'),
-        related_name='stock_items',
-        null=True,
-        blank=True,
-    )
+    # sales_order = models.ForeignKey(  # Order module removed
+    #     'order.SalesOrder',
+    #     on_delete=models.SET_NULL,
+    #     verbose_name=_('Destination Sales Order'),
+    #     related_name='stock_items',
+    #     null=True,
+    #     blank=True,
+    # )
 
     expiry_date = models.DateField(
         blank=True,

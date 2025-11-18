@@ -120,14 +120,14 @@ class GenerateBatchCodeSerializer(serializers.Serializer):
         help_text=_('Select part to generate batch code for'),
     )
 
-    purchase_order = serializers.PrimaryKeyRelatedField(
-        queryset=order.models.PurchaseOrder.objects.all(),
-        many=False,
-        required=False,
-        allow_null=True,
-        label=_('Purchase Order'),
-        help_text=_('Select purchase order'),
-    )
+    # purchase_order = serializers.PrimaryKeyRelatedField(
+    #     queryset=order.models.PurchaseOrder.objects.all(),  # Order module removed
+    #     many=False,
+    #     required=False,
+    #     allow_null=True,
+    #     label=_('Purchase Order'),
+    #     help_text=_('Select purchase order'),
+    # )
 
     quantity = serializers.FloatField(
         required=False,
@@ -336,8 +336,8 @@ class StockItemSerializer(
             'batch',
             'location',
             'belongs_to',
-            'build',
-            'consumed_by',
+            # 'build',  # Build module removed
+            # 'consumed_by',  # Build module removed
             'customer',
             'delete_on_deplete',
             'expiry_date',
@@ -348,10 +348,10 @@ class StockItemSerializer(
             'owner',
             'packaging',
             'parent',
-            'purchase_order',
-            'purchase_order_reference',
-            'sales_order',
-            'sales_order_reference',
+            # 'purchase_order',  # Order module removed
+            # 'purchase_order_reference',  # Order module removed
+            # 'sales_order',  # Order module removed
+            # 'sales_order_reference',  # Order module removed
             'status',
             'status_text',
             'status_custom_key',
@@ -642,13 +642,13 @@ class StockItemSerializer(
         help_text=_('Purchase currency of this stock item')
     )
 
-    purchase_order_reference = serializers.CharField(
-        source='purchase_order.reference', read_only=True, allow_null=True
-    )
+    # purchase_order_reference = serializers.CharField(  # Order module removed
+    #     source='purchase_order.reference', read_only=True, allow_null=True
+    # )
 
-    sales_order_reference = serializers.CharField(
-        source='sales_order.reference', read_only=True, allow_null=True
-    )
+    # sales_order_reference = serializers.CharField(  # Order module removed
+    #     source='sales_order.reference', read_only=True, allow_null=True
+    # )
 
     tags = TagListSerializerField(required=False)
 

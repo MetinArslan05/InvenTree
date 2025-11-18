@@ -54,7 +54,7 @@ from InvenTree.mixins import (
     SerializerContextMixin,
 )
 # BomItem removed - BOM system has been removed
-from part.models import Part, PartCategory
+from part.models import BomItem, Part, PartCategory
 from part.serializers import PartBriefSerializer
 from stock.generators import generate_batch_code, generate_serial_number
 from stock.models import (
@@ -527,11 +527,11 @@ class StockFilter(FilterSet):
         fields = [
             'supplier_part',
             'belongs_to',
-            'build',
+            # 'build',  # Build module removed
             'customer',
-            'consumed_by',
-            'sales_order',
-            'purchase_order',
+            # 'consumed_by',  # Build module removed
+            # 'sales_order',  # Order module removed
+            # 'purchase_order',  # Order module removed
             'tags__name',
             'tags__slug',
         ]
@@ -1355,9 +1355,9 @@ class StockItemTestResultFilter(FilterSet):
         # Simple filter fields
         fields = ['user', 'template', 'result', 'value']
 
-    build = rest_filters.ModelChoiceFilter(
-        label='Build', queryset=Build.objects.all(), field_name='stock_item__build'
-    )
+    # build = rest_filters.ModelChoiceFilter(  # Build module removed
+    #     label='Build', queryset=Build.objects.all(), field_name='stock_item__build'
+    # )
 
     part = rest_filters.ModelChoiceFilter(
         label='Part', queryset=Part.objects.all(), field_name='stock_item__part'
