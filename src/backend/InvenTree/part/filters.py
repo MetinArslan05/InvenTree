@@ -39,103 +39,39 @@ import InvenTree.conversion
 import InvenTree.helpers
 import part.models
 import stock.models
-from build.status_codes import BuildStatusGroups
-from order.status_codes import PurchaseOrderStatusGroups, SalesOrderStatusGroups
 
 
 def annotate_in_production_quantity(reference: str = '') -> QuerySet:
     """Annotate the 'in production' quantity for each part in a queryset.
 
-    - Sum the 'quantity' field for all stock items which are 'in production' for each part.
-    - This is the total quantity of "incomplete build outputs" for all active builds
-    - This will return the same quantity as the 'quantity_in_production' method on the Part model
+    Note: Build order functionality has been removed from this system.
+    This function now returns 0 for all parts.
 
     Arguments:
         reference: Reference to the part from the current queryset (default = '')
     """
-    building_filter = Q(
-        is_building=True, build__status__in=BuildStatusGroups.ACTIVE_CODES
-    )
-
-    return Coalesce(
-        SubquerySum(f'{reference}stock_items__quantity', filter=building_filter),
-        Decimal(0),
-        output_field=DecimalField(),
-    )
+    # Build orders have been removed - return 0
+    return Value(0, output_field=DecimalField())
 
 
 def annotate_scheduled_to_build_quantity(reference: str = '') -> QuerySet:
     """Annotate the 'scheduled to build' quantity for each part in a queryset.
 
-    - This is total scheduled quantity for all build orders which are 'active'
-    - This may be different to the "in production" quantity
-    - This will return the same quantity as the 'quantity_being_built' method no the Part model
+    Note: Build order functionality has been removed from this system.
+    This function now returns 0 for all parts.
     """
-    building_filter = Q(status__in=BuildStatusGroups.ACTIVE_CODES)
-
-    return Coalesce(
-        SubquerySum(
-            Greatest(
-                ExpressionWrapper(
-                    Cast(F(f'{reference}builds__quantity'), output_field=IntegerField())
-                    - Cast(
-                        F(f'{reference}builds__completed'), output_field=IntegerField()
-                    ),
-                    output_field=IntegerField(),
-                ),
-                0,
-            ),
-            filter=building_filter,
-        ),
-        0,
-        output_field=IntegerField(),
-    )
+    # Build orders have been removed - return 0
+    return Value(0, output_field=IntegerField())
 
 
 def annotate_on_order_quantity(reference: str = '') -> QuerySet:
     """Annotate the 'on order' quantity for each part in a queryset.
 
-    Sum the 'remaining quantity' of each line item for any open purchase orders for each part:
-
-    - Purchase order must be 'active' or 'pending'
-    - Received quantity must be less than line item quantity
-
-    Note that in addition to the 'quantity' on order, we must also take into account 'pack_quantity'.
+    Note: Purchase order functionality has been removed from this system.
+    This function now returns 0 for all parts.
     """
-    # Filter only 'active' purchase orders
-    # Filter only line with outstanding quantity
-    order_filter = Q(
-        order__status__in=PurchaseOrderStatusGroups.OPEN, quantity__gt=F('received')
-    )
-
-    return Greatest(
-        Coalesce(
-            SubquerySum(
-                ExpressionWrapper(
-                    F(f'{reference}supplier_parts__purchase_order_line_items__quantity')
-                    * F(f'{reference}supplier_parts__pack_quantity_native'),
-                    output_field=DecimalField(),
-                ),
-                filter=order_filter,
-            ),
-            Decimal(0),
-            output_field=DecimalField(),
-        )
-        - Coalesce(
-            SubquerySum(
-                ExpressionWrapper(
-                    F(f'{reference}supplier_parts__purchase_order_line_items__received')
-                    * F(f'{reference}supplier_parts__pack_quantity_native'),
-                    output_field=DecimalField(),
-                ),
-                filter=order_filter,
-            ),
-            Decimal(0),
-            output_field=DecimalField(),
-        ),
-        Decimal(0),
-        output_field=DecimalField(),
-    )
+    # Purchase orders have been removed - return 0
+    return Value(0, output_field=DecimalField())
 
 
 def annotate_total_stock(reference: str = '', filter: Optional[Q] = None) -> QuerySet:
@@ -165,109 +101,49 @@ def annotate_total_stock(reference: str = '', filter: Optional[Q] = None) -> Que
 def annotate_build_order_requirements(reference: str = '') -> QuerySet:
     """Annotate the total quantity of each part required for build orders.
 
-    - Only interested in 'active' build orders
-    - We are looking for any BuildLine items which required this part (bom_item.sub_part)
-    - We are interested in the 'quantity' of each BuildLine item
-
+    Note: Build order functionality has been removed from this system.
+    This function now returns 0 for all parts.
     """
-    # Active build orders only
-    build_filter = Q(build__status__in=BuildStatusGroups.ACTIVE_CODES)
-
-    return Coalesce(
-        SubquerySum(f'{reference}used_in__build_lines__quantity', filter=build_filter),
-        Decimal(0),
-        output_field=models.DecimalField(),
-    )
+    # Build orders have been removed - return 0
+    return Value(0, output_field=models.DecimalField())
 
 
 def annotate_build_order_allocations(reference: str = '', location=None) -> QuerySet:
     """Annotate the total quantity of each part allocated to build orders.
 
-    - This function calculates the total part quantity allocated to open build orders
-    - Finds all build order allocations for each part (using the provided filter)
-    - Aggregates the 'allocated quantity' for each relevant build order allocation item
+    Note: Build order functionality has been removed from this system.
+    This function now returns 0 for all parts.
 
     Arguments:
         reference: The relationship reference of the part from the current model
-        location: If provided, only allocated stock items from this location are considered
+        location: If provided, only allocated stock items from this location are considered (ignored)
     """
-    # Build filter only returns 'active' build orders
-    build_filter = Q(build_line__build__status__in=BuildStatusGroups.ACTIVE_CODES)
-
-    if location is not None:
-        # Filter by location (including any child locations)
-
-        build_filter &= Q(
-            stock_item__location__tree_id=location.tree_id,
-            stock_item__location__lft__gte=location.lft,
-            stock_item__location__rght__lte=location.rght,
-            stock_item__location__level__gte=location.level,
-        )
-
-    return Coalesce(
-        SubquerySum(
-            f'{reference}stock_items__allocations__quantity', filter=build_filter
-        ),
-        Decimal(0),
-        output_field=models.DecimalField(),
-    )
+    # Build orders have been removed - return 0
+    return Value(0, output_field=models.DecimalField())
 
 
 def annotate_sales_order_requirements(reference: str = '') -> QuerySet:
     """Annotate the total quantity of each part required for sales orders.
 
-    - Only interested in 'active' sales orders
-    - We are looking for any order lines which requires this part
-    - We are interested in 'quantity'-'shipped'
-
+    Note: Sales order functionality has been removed from this system.
+    This function now returns 0 for all parts.
     """
-    # Order filter only returns incomplete shipments for open orders
-    order_filter = Q(order__status__in=SalesOrderStatusGroups.OPEN)
-    return Coalesce(
-        SubquerySum(f'{reference}sales_order_line_items__quantity', filter=order_filter)
-        - SubquerySum(
-            f'{reference}sales_order_line_items__shipped', filter=order_filter
-        ),
-        Decimal(0),
-        output_field=models.DecimalField(),
-    )
+    # Sales orders have been removed - return 0
+    return Value(0, output_field=models.DecimalField())
 
 
 def annotate_sales_order_allocations(reference: str = '', location=None) -> QuerySet:
     """Annotate the total quantity of each part allocated to sales orders.
 
-    - This function calculates the total part quantity allocated to open sales orders"
-    - Finds all sales order allocations for each part (using the provided filter)
-    - Aggregates the 'allocated quantity' for each relevant sales order allocation item
+    Note: Sales order functionality has been removed from this system.
+    This function now returns 0 for all parts.
 
     Arguments:
         reference: The relationship reference of the part from the current model
-        location: If provided, only allocated stock items from this location are considered
+        location: If provided, only allocated stock items from this location are considered (ignored)
     """
-    # Order filter only returns incomplete shipments for open orders
-    order_filter = Q(
-        line__order__status__in=SalesOrderStatusGroups.OPEN,
-        shipment__shipment_date=None,
-    )
-
-    if location is not None:
-        # Filter by location (including any child locations)
-
-        order_filter &= Q(
-            item__location__tree_id=location.tree_id,
-            item__location__lft__gte=location.lft,
-            item__location__rght__lte=location.rght,
-            item__location__level__gte=location.level,
-        )
-
-    return Coalesce(
-        SubquerySum(
-            f'{reference}stock_items__sales_order_allocations__quantity',
-            filter=order_filter,
-        ),
-        Decimal(0),
-        output_field=models.DecimalField(),
-    )
+    # Sales orders have been removed - return 0
+    return Value(0, output_field=models.DecimalField())
 
 
 def variant_stock_query(reference: str = '', filter: Optional[Q] = None) -> QuerySet:
