@@ -16,18 +16,13 @@ from flags.urls import flagged_path
 from oauth2_provider import urls as oauth2_urls
 from sesame.views import LoginView
 
-import build.api
 import common.api
 import company.api
 import importer.api
-import machine.api
-import order.api
 import part.api
-import plugin.api
 import report.api
 import stock.api
 import users.api
-from plugin.urls import get_plugin_urls
 from web.urls import cui_compatibility_urls
 from web.urls import urlpatterns as platform_urls
 
@@ -52,13 +47,9 @@ admin.site.site_header = get_setting(
 apipatterns = [
     # Global search
     path('admin/', include(common.api.admin_api_urls)),
-    path('bom/', include(part.api.bom_api_urls)),
-    path('build/', include(build.api.build_api_urls)),
     path('company/', include(company.api.company_api_urls)),
     path('importer/', include(importer.api.importer_api_urls)),
     path('label/', include(report.api.label_api_urls)),
-    path('machine/', include(machine.api.machine_api_urls)),
-    path('order/', include(order.api.order_api_urls)),
     path('part/', include(part.api.part_api_urls)),
     path('report/', include(report.api.report_api_urls)),
     path('search/', APISearchView.as_view(), name='api-search'),
@@ -80,8 +71,6 @@ apipatterns = [
         ]),
     ),
     path('user/', include(users.api.user_urls)),
-    # Plugin endpoints
-    path('', include(plugin.api.plugin_api_urls)),
     # Common endpoints endpoint
     path('', include(common.api.common_api_urls)),
     # OpenAPI Schema
@@ -161,10 +150,6 @@ urlpatterns += [  # API URLs
     path('api-doc/', SpectacularRedocView.as_view(url_name='schema'), name='api-doc'),
 ]
 urlpatterns += platform_urls
-
-# Append custom plugin URLs (if custom plugin support is enabled)
-if settings.PLUGINS_ENABLED:
-    urlpatterns.append(get_plugin_urls())
 
 # Server running in "DEBUG" mode?
 if settings.DEBUG:

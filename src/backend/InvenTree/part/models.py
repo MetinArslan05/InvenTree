@@ -50,8 +50,6 @@ import part.helpers as part_helpers
 import part.settings as part_settings
 import report.mixins
 import users.models
-from build import models as BuildModels
-from build.status_codes import BuildStatusGroups
 from common.currency import currency_code_default
 from common.icons import validate_icon
 from common.settings import get_global_setting
@@ -60,12 +58,6 @@ from InvenTree import helpers, validators
 from InvenTree.exceptions import log_error
 from InvenTree.fields import InvenTreeURLField
 from InvenTree.helpers import decimal2money, decimal2string, normalize, str2bool
-from order import models as OrderModels
-from order.status_codes import (
-    PurchaseOrderStatus,
-    PurchaseOrderStatusGroups,
-    SalesOrderStatusGroups,
-)
 from stock import models as StockModels
 
 logger = structlog.get_logger('inventree')
