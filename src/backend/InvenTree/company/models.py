@@ -28,7 +28,7 @@ import InvenTree.validators
 import report.mixins
 from common.currency import currency_code_default
 from InvenTree.fields import InvenTreeURLField, RoundingDecimalField
-from order.status_codes import PurchaseOrderStatusGroups
+# Purchase order functionality has been removed
 
 
 def rename_company_image(instance, filename):
@@ -978,34 +978,32 @@ class SupplierPart(
     get_price = common.currency.get_price
 
     def open_orders(self):
-        """Return a database query for PurchaseOrder line items for this SupplierPart, limited to purchase orders that are open / outstanding."""
-        return self.purchase_order_line_items.prefetch_related('order').filter(
-            order__status__in=PurchaseOrderStatusGroups.OPEN
-        )
+        """Return a database query for PurchaseOrder line items for this SupplierPart.
+
+        Note: Purchase order functionality has been removed from this system.
+        This method returns an empty queryset for compatibility.
+        """
+        # Purchase orders have been removed - return empty queryset
+        from company.models import SupplierPart
+        return SupplierPart.objects.none()
 
     def on_order(self):
         """Return the total quantity of items currently on order.
 
-        Subtract partially received stock as appropriate
+        Note: Purchase order functionality has been removed from this system.
+        This method returns 0 for compatibility.
         """
-        totals = self.open_orders().aggregate(Sum('quantity'), Sum('received'))
-
-        # Quantity on order
-        q = totals.get('quantity__sum', 0)
-
-        # Quantity received
-        r = totals.get('received__sum', 0)
-
-        if q is None or r is None:
-            return 0
-        return max(q - r, 0)
+        # Purchase orders have been removed - return 0
+        return 0
 
     def purchase_orders(self):
-        """Returns a list of purchase orders relating to this supplier part."""
-        return [
-            line.order
-            for line in self.purchase_order_line_items.all().prefetch_related('order')
-        ]
+        """Returns a list of purchase orders relating to this supplier part.
+
+        Note: Purchase order functionality has been removed from this system.
+        This method returns an empty list for compatibility.
+        """
+        # Purchase orders have been removed - return empty list
+        return []
 
     @property
     def pretty_name(self):
