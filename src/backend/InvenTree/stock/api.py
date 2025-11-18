@@ -23,8 +23,7 @@ import common.settings
 import InvenTree.helpers
 import InvenTree.permissions
 import stock.serializers as StockSerializers
-from build.models import Build
-from build.serializers import BuildSerializer
+# Build, Order modules have been removed
 from company.models import Company, ManufacturerPart, SupplierPart
 from company.serializers import CompanySerializer
 from data_exporter.mixins import DataExportViewMixin
@@ -54,13 +53,8 @@ from InvenTree.mixins import (
     RetrieveUpdateDestroyAPI,
     SerializerContextMixin,
 )
-from order.models import PurchaseOrder, ReturnOrder, SalesOrder
-from order.serializers import (
-    PurchaseOrderSerializer,
-    ReturnOrderSerializer,
-    SalesOrderSerializer,
-)
-from part.models import BomItem, Part, PartCategory
+# BomItem removed - BOM system has been removed
+from part.models import Part, PartCategory
 from part.serializers import PartBriefSerializer
 from stock.generators import generate_batch_code, generate_serial_number
 from stock.models import (

@@ -25,14 +25,14 @@ from mptt.managers import TreeManager
 from mptt.models import TreeForeignKey
 from taggit.managers import TaggableManager
 
-import build.models
+# Build and Order modules have been removed
+# Plugin system has been removed
 import common.models
 import InvenTree.exceptions
 import InvenTree.helpers
 import InvenTree.models
 import InvenTree.ready
 import InvenTree.tasks
-import order.models
 import report.mixins
 import stock.tasks
 from common.icons import validate_icon
@@ -42,18 +42,22 @@ from generic.states import StatusCodeMixin
 from generic.states.fields import InvenTreeCustomStatusModelField
 from InvenTree.fields import InvenTreeModelMoneyField, InvenTreeURLField
 from InvenTree.status_codes import (
-    SalesOrderStatusGroups,
     StockHistoryCode,
     StockStatus,
     StockStatusGroups,
 )
 from part import models as PartModels
-from plugin.events import trigger_event
 from stock.events import StockEvents
 from stock.generators import generate_batch_code
 from users.models import Owner
 
 logger = structlog.get_logger('inventree')
+
+
+# Stub for trigger_event since plugin system is removed
+def trigger_event(*args, **kwargs):
+    """Stub function for trigger_event - plugin system has been removed."""
+    pass
 
 
 class StockLocationType(InvenTree.models.MetadataMixin, models.Model):

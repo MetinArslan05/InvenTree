@@ -16,13 +16,12 @@ from rest_framework.serializers import ValidationError
 from sql_util.utils import SubqueryCount, SubquerySum
 from taggit.serializers import TagListSerializerField
 
-import build.models
+# Build and Order modules have been removed
 import company.models
 import company.serializers as company_serializers
 import InvenTree.helpers
 import InvenTree.ready
 import InvenTree.serializers
-import order.models
 import part.filters as part_filters
 import part.models as part_models
 import part.serializers as part_serializers
