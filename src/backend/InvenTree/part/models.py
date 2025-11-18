@@ -1315,129 +1315,59 @@ class Part(
     def requiring_build_orders(self, include_variants: bool = True):
         """Return list of outstanding build orders which require this part.
 
+        Note: Build order functionality has been removed from this system.
+        This method returns an empty queryset for compatibility.
+
         Arguments:
             include_variants: If True, include variants of this part in the calculation
         """
-        # List parts that this part is required for
-
-        if include_variants:
-            # If we are including variants, get all parts in the variant tree
-            parts = list(self.get_descendants(include_self=True))
-        else:
-            parts = [self]
-
-        used_in_parts = set()
-
-        for part in parts:
-            # Get all assemblies which use this part
-            used_in_parts.update(part.get_used_in())
-
-        # Now, get a list of outstanding build orders which require this part
-        builds = BuildModels.Build.objects.filter(
-            part__in=list(used_in_parts), status__in=BuildStatusGroups.ACTIVE_CODES
-        )
-
-        return builds
+        # Build orders have been removed - return empty queryset
+        return Part.objects.none()
 
     def required_build_order_quantity(self, include_variants: bool = True):
         """Return the quantity of this part required for active build orders.
 
+        Note: Build order functionality has been removed from this system.
+        This method returns 0 for compatibility.
+
         Arguments:
             include_variants: If True, include variants of this part in the calculation
         """
-        # List active build orders which reference this part
-        builds = self.requiring_build_orders(include_variants=include_variants)
-
-        quantity = 0
-
-        if include_variants:
-            matching_parts = list(self.get_descendants(include_self=True))
-        else:
-            matching_parts = [self]
-
-        # Cache the BOM items that we query
-        # Keep a dict of part ID to BOM items
-        cached_bom_items: dict = {}
-
-        for build in builds:
-            if build.part.pk not in cached_bom_items:
-                # Get the BOM items for this part
-                bom_items = build.part.get_bom_items().filter(
-                    sub_part__in=matching_parts
-                )
-                cached_bom_items[build.part.pk] = bom_items
-            else:
-                bom_items = cached_bom_items[build.part.pk]
-
-            # Match BOM item to build
-            for bom_item in bom_items:
-                build_line = build.build_lines.filter(bom_item=bom_item).first()
-
-                if not build_line:
-                    continue
-
-                line_quantity = max(0, build_line.quantity - build_line.consumed)
-                quantity += line_quantity
-
-        return quantity
+        # Build orders have been removed - return 0
+        return 0
 
     def requiring_sales_orders(self, include_variants: bool = True):
         """Return a list of sales orders which require this part.
 
+        Note: Sales order functionality has been removed from this system.
+        This method returns an empty set for compatibility.
+
         Arguments:
             include_variants: If True, include variants of this part in the calculation
         """
-        orders = set()
-
-        if include_variants:
-            parts = list(self.get_descendants(include_self=True))
-        else:
-            parts = [self]
-
-        # Get a list of line items for open orders which match this part
-        open_lines = OrderModels.SalesOrderLineItem.objects.filter(
-            order__status__in=SalesOrderStatusGroups.OPEN, part__in=parts
-        )
-
-        for line in open_lines:
-            orders.add(line.order)
-
-        return orders
+        # Sales orders have been removed - return empty set
+        return set()
 
     def required_sales_order_quantity(self, include_variants: bool = True):
         """Return the quantity of this part required for active sales orders.
 
+        Note: Sales order functionality has been removed from this system.
+        This method returns 0 for compatibility.
+
         Arguments:
             include_variants: If True, include variants of this part in the calculation
         """
-        if include_variants:
-            parts = list(self.get_descendants(include_self=True))
-        else:
-            parts = [self]
-
-        # Get a list of line items for open orders which match this part
-        open_lines = OrderModels.SalesOrderLineItem.objects.filter(
-            order__status__in=SalesOrderStatusGroups.OPEN, part__in=parts
-        )
-
-        quantity = 0
-
-        for line in open_lines:
-            # Determine the quantity "remaining" to be shipped out
-
-            if not line:
-                continue
-
-            remaining = max(line.quantity - line.shipped, 0)
-            quantity += remaining
-
-        return quantity
+        # Sales orders have been removed - return 0
+        return 0
 
     def required_order_quantity(self, include_variants: bool = True):
-        """Return total required to fulfil orders."""
-        return self.required_build_order_quantity(
-            include_variants=include_variants
-        ) + self.required_sales_order_quantity(include_variants=include_variants)
+        """Return total required to fulfil orders.
+
+        Note: Order functionality has been removed from this system.
+        This method returns 0 for compatibility.
+        """
+        # Orders have been removed - return 0
+        return 0
 
     @property
     def quantity_to_order(self):
@@ -1575,147 +1505,82 @@ class Part(
     def active_builds(self):
         """Return a list of outstanding builds.
 
-        Builds marked as 'complete' or 'cancelled' are ignored
+        Note: Build functionality has been removed from this system.
+        This method returns an empty queryset for compatibility.
         """
-        return self.builds.filter(status__in=BuildStatusGroups.ACTIVE_CODES)
+        # Build orders have been removed - return empty queryset
+        return Part.objects.none()
 
     @property
     def quantity_being_built(self, include_variants: bool = True):
         """Return the current number of parts currently being built.
 
+        Note: Build functionality has been removed from this system.
+        This method returns 0 for compatibility.
+
         Arguments:
             include_variants: If True, include variants of this part in the calculation
-
-        Note: This is the total quantity of Build orders, *not* the number of build outputs.
-              In this fashion, it is the "projected" quantity of builds
         """
-        builds = BuildModels.Build.objects.filter(
-            status__in=BuildStatusGroups.ACTIVE_CODES
-        )
-
-        if include_variants:
-            # If we are including variants, get all parts in the variant tree
-            builds = builds.filter(part__in=self.get_descendants(include_self=True))
-        else:
-            # Only look at this part
-            builds = builds.filter(part=self)
-
-        quantity = 0
-
-        for build in builds:
-            # The remaining items in the build
-            quantity += build.remaining
-
-        return quantity
+        # Build orders have been removed - return 0
+        return 0
 
     @property
     def quantity_in_production(self, include_variants: bool = True):
         """Quantity of this part currently actively in production.
 
+        Note: Build functionality has been removed from this system.
+        This method returns 0 for compatibility.
+
         Arguments:
             include_variants: If True, include variants of this part in the calculation
-
-        Note: This may return a different value to `quantity_being_built`
         """
-        quantity = 0
-
-        items = StockModels.StockItem.objects.filter(
-            is_building=True, build__status__in=BuildStatusGroups.ACTIVE_CODES
-        )
-
-        if include_variants:
-            # If we are including variants, get all parts in the variant tree
-            items = items.filter(part__in=self.get_descendants(include_self=True))
-        else:
-            # Only look at this part
-            items = items.filter(part=self)
-
-        for item in items:
-            # The remaining items in the build
-            quantity += item.quantity
-
-        return quantity
+        # Build orders have been removed - return 0
+        return 0
 
     def build_order_allocations(self, **kwargs):
-        """Return all 'BuildItem' objects which allocate this part to Build objects."""
-        include_variants = kwargs.get('include_variants', True)
+        """Return all 'BuildItem' objects which allocate this part to Build objects.
 
-        queryset = BuildModels.BuildItem.objects.all()
-
-        if include_variants:
-            variants = self.get_descendants(include_self=True)
-            queryset = queryset.filter(stock_item__part__in=variants)
-        else:
-            queryset = queryset.filter(stock_item__part=self)
-
-        return queryset
+        Note: Build functionality has been removed from this system.
+        This method returns an empty queryset for compatibility.
+        """
+        # Build orders have been removed - return empty queryset
+        return StockModels.StockItem.objects.none()
 
     def build_order_allocation_count(self, **kwargs):
-        """Return the total amount of this part allocated to build orders."""
-        query = self.build_order_allocations(**kwargs).aggregate(
-            total=Coalesce(
-                Sum('quantity', output_field=models.DecimalField()),
-                0,
-                output_field=models.DecimalField(),
-            )
-        )
+        """Return the total amount of this part allocated to build orders.
 
-        return query['total']
+        Note: Build functionality has been removed from this system.
+        This method returns 0 for compatibility.
+        """
+        # Build orders have been removed - return 0
+        return 0
 
     def sales_order_allocations(self, **kwargs):
-        """Return all sales-order-allocation objects which allocate this part to a SalesOrder."""
-        include_variants = kwargs.get('include_variants', True)
+        """Return all sales-order-allocation objects which allocate this part to a SalesOrder.
 
-        queryset = OrderModels.SalesOrderAllocation.objects.all()
-
-        if include_variants:
-            # Include allocations for all variants
-            variants = self.get_descendants(include_self=True)
-            queryset = queryset.filter(item__part__in=variants)
-        else:
-            # Only look at this part
-            queryset = queryset.filter(item__part=self)
-
-        # Default behaviour is to only return *pending* allocations
-        pending = kwargs.get('pending', True)
-
-        if pending is True:
-            # Look only for 'open' orders which have not shipped
-            queryset = queryset.filter(
-                line__order__status__in=SalesOrderStatusGroups.OPEN,
-                shipment__shipment_date=None,
-            )
-        elif pending is False:
-            # Look only for 'closed' orders or orders which have shipped
-            queryset = queryset.exclude(
-                line__order__status__in=SalesOrderStatusGroups.OPEN,
-                shipment__shipment_date=None,
-            )
-
-        return queryset
+        Note: Sales order functionality has been removed from this system.
+        This method returns an empty queryset for compatibility.
+        """
+        # Sales orders have been removed - return empty queryset
+        return StockModels.StockItem.objects.none()
 
     def sales_order_allocation_count(self, **kwargs):
-        """Return the total quantity of this part allocated to sales orders."""
-        query = self.sales_order_allocations(**kwargs).aggregate(
-            total=Coalesce(
-                Sum('quantity', output_field=models.DecimalField()),
-                0,
-                output_field=models.DecimalField(),
-            )
-        )
+        """Return the total quantity of this part allocated to sales orders.
 
-        return query['total']
+        Note: Sales order functionality has been removed from this system.
+        This method returns 0 for compatibility.
+        """
+        # Sales orders have been removed - return 0
+        return 0
 
     def allocation_count(self, **kwargs):
-        """Return the total quantity of stock allocated for this part, against both build orders and sales orders."""
-        if self.id is None:
-            # If this instance has not been saved, foreign-key lookups will fail
-            return 0
+        """Return the total quantity of stock allocated for this part.
 
-        return sum([
-            self.build_order_allocation_count(**kwargs),
-            self.sales_order_allocation_count(**kwargs),
-        ])
+        Note: Build and sales order functionality has been removed from this system.
+        This method returns 0 for compatibility.
+        """
+        # Orders have been removed - return 0
+        return 0
 
     def stock_entries(
         self, include_variants=True, include_external=True, in_stock=None, location=None
@@ -2514,26 +2379,11 @@ class Part(
     def on_order(self):
         """Return the total number of items on order for this part.
 
-        Note that some supplier parts may have a different pack_quantity attribute,
-        and this needs to be taken into account!
+        Note: Purchase order functionality has been removed from this system.
+        This method returns 0 for compatibility.
         """
-        quantity = 0
-
-        # Iterate through all supplier parts
-        for sp in self.supplier_parts.all():
-            # Look at any incomplete line item for open orders
-            lines = sp.purchase_order_line_items.filter(
-                order__status__in=PurchaseOrderStatusGroups.OPEN,
-                quantity__gt=F('received'),
-            )
-
-            for line in lines:
-                remaining = line.quantity - line.received
-
-                if remaining > 0:
-                    quantity += sp.base_quantity(remaining)
-
-        return quantity
+        # Purchase orders have been removed - return 0
+        return 0
 
     def get_parameter(self, name):
         """Return the parameter with the given name.
@@ -2989,40 +2839,13 @@ class PartPricing(common.models.MetaMixin):
     def update_purchase_cost(self, save=True):
         """Recalculate historical purchase cost for the referenced Part instance.
 
-        Purchase history only takes into account "completed" purchase orders.
+        Note: Purchase order functionality has been removed.
+        This now only uses manual stock item pricing.
         """
-        # Find all line items for completed orders which reference this part
-        line_items = OrderModels.PurchaseOrderLineItem.objects.filter(
-            order__status=PurchaseOrderStatus.COMPLETE.value,
-            received__gt=0,
-            part__part=self.part,
-        )
-
-        # Exclude line items which do not have an associated price
-        line_items = line_items.exclude(purchase_price=None)
-
         purchase_min = None
         purchase_max = None
 
-        for line in line_items:
-            if line.purchase_price is None:
-                continue
-
-            # Take supplier part pack size into account
-            purchase_cost = self.convert(
-                line.purchase_price / line.part.pack_quantity_native
-            )
-
-            if purchase_cost is None:
-                continue
-
-            if purchase_min is None or purchase_cost < purchase_min:
-                purchase_min = purchase_cost
-
-            if purchase_max is None or purchase_cost > purchase_max:
-                purchase_max = purchase_cost
-
-        # Also check if manual stock item pricing is included
+        # Check if manual stock item pricing is included
         if get_global_setting('PRICING_USE_STOCK_PRICING', True):
             items = self.part.stock_items.all()
 
@@ -3218,7 +3041,11 @@ class PartPricing(common.models.MetaMixin):
         self.overall_max = overall_max
 
     def update_sale_cost(self, save=True):
-        """Recalculate sale cost data."""
+        """Recalculate sale cost data.
+
+        Note: Sales order history functionality has been removed.
+        This now only uses sale price breaks.
+        """
         # Iterate through the sell price breaks
         min_sell_price = None
         max_sell_price = None
@@ -3239,34 +3066,9 @@ class PartPricing(common.models.MetaMixin):
         self.sale_price_min = min_sell_price
         self.sale_price_max = max_sell_price
 
-        min_sell_history = None
-        max_sell_history = None
-
-        # Calculate sale price history too
-        parts = self.part.get_descendants(include_self=True)
-
-        # Find all line items for shipped sales orders which reference this part
-        line_items = OrderModels.SalesOrderLineItem.objects.filter(
-            order__status__in=SalesOrderStatusGroups.COMPLETE, part__in=parts
-        )
-
-        # Exclude line items which do not have associated pricing data
-        line_items = line_items.exclude(sale_price=None)
-
-        for line in line_items:
-            cost = self.convert(line.sale_price)
-
-            if cost is None:
-                continue
-
-            if min_sell_history is None or cost < min_sell_history:
-                min_sell_history = cost
-
-            if max_sell_history is None or cost > max_sell_history:
-                max_sell_history = cost
-
-        self.sale_history_min = min_sell_history
-        self.sale_history_max = max_sell_history
+        # Sales order history has been removed
+        self.sale_history_min = None
+        self.sale_history_max = None
 
         if save:
             self.save()
